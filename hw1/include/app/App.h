@@ -42,6 +42,10 @@ private:
     /// given that its slope m satisfies 0.0 <= m <= 1.0 and that (x0, y0) is the start position.
     /// All pixels on this line are appended to path.
     static void bresenhamLine(std::vector<Pixel::Vertex> & path, int x0, int y0, int x1, int y1);
+    static void bresenhamCircle(std::vector<Pixel::Vertex> & path, int cx, int cy, int px, int py);
+    static void bresenhamEllipse(std::vector<Pixel::Vertex>& path, int x0, int y0, int x1, int y1);
+    static void bresenhamQuadratic(std::vector<Pixel::Vertex>& path, float a2, float a1, float a0);
+    static void bresenhamCubic(std::vector<Pixel::Vertex>& path, float a3, float a2, float a1, float a0);
 
     App();
 
@@ -58,6 +62,9 @@ private:
     // Object attributes affected by GUI.
     bool animationEnabled {true};
     bool showPreview {false};
+    bool enclose {false};
+    bool polydone {false};
+    int mode {0};
 
     // Frontend GUI
     double timeElapsedSinceLastFrame {0.0};

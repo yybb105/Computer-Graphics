@@ -1,10 +1,10 @@
 # HW1
 
-Your Name (Please replace with your name.)
+Yibin Ye
 
-Your SBU ID (Please replace with your 9-digit SBU ID.)
+115638220
 
-Your Email (Please replace with your email.)
+yibin.ye@stonybrook.edu
 
 ## Overview
 
@@ -54,30 +54,33 @@ Features or parts left unchecked here won't be graded!
 
 - [x] 1. Line Segment (Fully Implemented in This Template)
   - [x] 0 <= m <= 1
-- [ ] 2. Line Segment
-  - [ ] Slope m < -1
-  - [ ] -1 <= m < 0
-  - [ ] 1 < m
-  - [ ] Vertical
-- [ ] 3. Ploy-line & Polygon
-  - [ ] Poly-line
-  - [ ] Polygon
-- [ ] 4. Circle & Ellipse
-  - [ ] Circle
-  - [ ] Ellipse
+- [x] 2. Line Segment
+  - [x] Slope m < -1
+  - [x] -1 <= m < 0
+  - [x] 1 < m
+  - [x] Vertical
+- [x] 3. Ploy-line & Polygon
+  - [x] Poly-line
+  - [x] Polygon
+- [x] 4. Circle & Ellipse
+  - [x] Circle
+  - [x] Ellipse
 - [ ] 5. Polynomial Curve (BONUS PART)
   - [ ] Line
-  - [ ] Quadratic Curve
-  - [ ] Cubic Curve
+  - [x] Quadratic Curve
+  - [x] Cubic Curve
   - [ ] Super-Quadrics
 
 ## Usage
 
 - If you have implemented extra functionalities not mentioned in the manual,
   you may specify them here.
+  N/A
 - If your program failed to obey the required mouse/keyboard gestures,
   you may also specify your own setting here.
   In this case, penalties may apply.
+- The user must select a mode by pressing 1, 3, 4, or 5 upon opening the window, otherwise the window will not respond.
+- The Polynomial Curve Part is flawed such that the space between pixels are not uniform 
 
 ## FAQ: Runtime error "shader file not successfully read"
 
@@ -94,3 +97,6 @@ Note that the working directory must be **exactly** root of your project
 
 Please include any other stuff you would like to mention in this section.
 E.g., format of your config file, and your suggestions on possible combinations of cubic curve parameters. 
+- The etc/config.txt file must only contain one single line, consisting of one integer (1 or 2), and three floats in the case of drawing quadratic curves or four in the case of cubic curves, separated by spaces.
+- E.g., 2 .001 .05 10
+- The user should press key 5 to enter the Polynomial Curve mode.
