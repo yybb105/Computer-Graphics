@@ -79,8 +79,8 @@ Features or parts left unchecked here won't be graded!
 - If your program failed to obey the required mouse/keyboard gestures,
   you may also specify your own setting here.
   In this case, penalties may apply.
-- The user must select a mode by pressing 1, 3, 4, or 5 upon opening the window, otherwise the window will not respond.
-- The Polynomial Curve Part is flawed such that the space between pixels are not uniform 
+1. The user must select a mode by pressing 1, 3, 4, or 5 upon opening the window, otherwise the window will not respond.
+2. The Polynomial Curve Part is flawed such that the space between pixels are not uniform for comparatively larger coefficients.
 
 ## FAQ: Runtime error "shader file not successfully read"
 
@@ -98,5 +98,5 @@ Note that the working directory must be **exactly** root of your project
 Please include any other stuff you would like to mention in this section.
 E.g., format of your config file, and your suggestions on possible combinations of cubic curve parameters. 
 - The etc/config.txt file must only contain one single line, consisting of one integer (1 or 2), and three floats in the case of drawing quadratic curves or four in the case of cubic curves, separated by spaces.
-- E.g., 2 .001 .05 10
+- E.g., 2 .001 .05 10; 2 -0.0005 0.2 200; 1 0.000001 0 -0.1 400; 1 0.000001 0.0002 -0.5 35; could be interesting sets of inputs.
 - The user should press key 5 to enter the Polynomial Curve mode.
