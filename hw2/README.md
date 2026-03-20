@@ -1,10 +1,10 @@
 # HW2
 
-Your Name (Please replace with your name.)
+Yibin Ye 
 
-Your SBU ID (Please replace with your 9-digit SBU ID.)
+115638220
 
-Your Email (Please replace with your email.)
+yibin.ye@stonybrook.edu
 
 ## Overview
 
@@ -65,21 +65,21 @@ cd ..
 Check all features implemented with "x" in "[ ]"s. 
 Features or parts left unchecked here won't be graded! 
 
-- [ ] 1. Bouncing Ball
-  - [ ] Creation
-  - [ ] Dynamically reading config file
-  - [ ] Movement
-  - [ ] Collison detection
-- [ ] 2. 4+ Bouncing Balls
-- [ ] 3. Bouncing Face
-  - [ ] Creation
-  - [ ] Dynamically reading config file
-  - [ ] Movement
-  - [ ] Collison detection
-  - [ ] Generation Evolution
-- [ ] 4. More Bouncing Faces
-  - [ ] 8+ bouncing faces
-  - [ ] 16+ bonucing faces
+- [x] 1. Bouncing Ball
+  - [x] Creation
+  - [x] Dynamically reading config file
+  - [x] Movement
+  - [x] Collison detection
+- [x] 2. 4+ Bouncing Balls
+- [x] 3. Bouncing Face
+  - [x] Creation
+  - [x] Dynamically reading config file
+  - [x] Movement
+  - [x] Collison detection
+  - [x] Generation Evolution
+- [x] 4. More Bouncing Faces
+  - [x] 8+ bouncing faces
+  - [x] 16+ bonucing faces
 - [ ] 5. BONUS
   - [ ] Please specify
 

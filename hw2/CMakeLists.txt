@@ -34,6 +34,7 @@ set(SHAPE
         src/shape/GLShape.cpp
         src/shape/Renderable.cpp
         src/shape/Triangle.cpp
+        src/shape/Face.cpp
 )
 
 set(ALL_INCLUDE_DIRS

@@ -43,17 +43,22 @@ Triangle::Triangle(
     glBindVertexArray(0);
 }
 
+void Triangle::trans(glm::vec2 to){
+        model = glm::translate(model, to);
+
+}
 
 void Triangle::render(float timeElapsedSinceLastFrame, bool animate)
 {
-    if (animate)
-    {
-        model = glm::rotate(model, timeElapsedSinceLastFrame);
-    }
+    // if (animate)
+    // {
+    //     model = glm::rotate(model, timeElapsedSinceLastFrame);
+    // }
 
     pShader->use();
     pShader->setMat3("model", model);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 

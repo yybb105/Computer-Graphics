@@ -28,7 +28,8 @@ public:
     );
 
     ~Triangle() noexcept override = default;
-
+    void trans(glm::vec2 to);
+    void setDir(glm::vec2 to);
     void render(float timeElapsedSinceLastFrame, bool animate) override;
 
 private:
