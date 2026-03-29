@@ -23,17 +23,18 @@ public:
 
     void render(float timeElapsedSinceLastFrame, bool animate) override;
 
-    glm::vec3 getParam();
-    glm::vec2 getDir();
-    void setDir(glm::vec2 dir);
+    glm::vec3 getParam();  // returns circle's position and radius
+    glm::vec2 getDir();     // returns circle's current direction (velocity)
+    void setDir(glm::vec2 dir);     // modify direction/velocity
+    void trans(glm::vec2 to);   // move circle
     
+    // properties
     int kWindowWidth {1000};
     int kWindowHeight {1000};
 
     bool hollow {false};
     bool boundary {true};
 
-    void trans(glm::vec2 to);
 
 private:
     std::vector<glm::vec3> parameters;

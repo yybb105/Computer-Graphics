@@ -38,7 +38,6 @@ Circle::Circle(Shader * shader, const std::vector<glm::vec3> & parameters, int w
     file >> this->dir.y;
     this->kWindowWidth = w;
     this->kWindowHeight = h;
-    // std::cout<<"(" << this->dir.x << ", " << this->dir.y << ")"<< std::endl;
 }
 
 glm::vec2 Circle::getDir(){
@@ -46,7 +45,6 @@ glm::vec2 Circle::getDir(){
 }
 
 void Circle::setDir(glm::vec2 d){
-    // std::cout << "set " << (this->dir).x << (this->dir).y <<" to "<< d.x << d.y<<std::endl;
     reversed = false;
     this->dir = d;
 }
@@ -61,14 +59,13 @@ glm::vec3 Circle::getParam(){
 }
 
 void Circle::trans(glm::vec2 to){
-            model = glm::translate(model,to);
+    model = glm::translate(model,to);
 }
 
 void Circle::render(float timeElapsedSinceLastFrame, bool animate)
 {
     if (animate & boundary)
     {
-        // std::cout<< "(" << curPos.x<<", " << curPos.y<<")"<<std::endl;    
         if (curPos.x - parameters[0].z <= 0 || curPos.x + parameters[0].z >= this->kWindowWidth || curPos.y + parameters[0].z >= this->kWindowHeight || curPos.y - parameters[0].z <= 0){
             reversed = !(reversed);
         }
@@ -86,8 +83,8 @@ void Circle::render(float timeElapsedSinceLastFrame, bool animate)
     else if (!boundary)
     {
         model = glm::translate(model, this->dir);
-            curPos.x += dir.x * (this->kWindowHeight / 2.0f);
-            curPos.y += dir.y * (this->kWindowHeight / 2.0f);
+        curPos.x += dir.x * (this->kWindowWidth / 2.0f);
+        curPos.y += dir.y * (this->kWindowHeight / 2.0f);
     }
 
     pShader->use();

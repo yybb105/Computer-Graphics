@@ -5,15 +5,17 @@
 
 // Face::Face(float r, float xpos, float ypos, float vx, float vy) {
 Face::Face(Shader* s1, Shader* s2, std::unique_ptr<Circle> boundary) {
+    // initialization
     this->boundary = move(boundary);
     this->boundary->hollow = true;
     glm::vec3 bound_info = this->boundary.get()->getParam();
+
     float half_radius = bound_info.z / 2.0f;
     float leftcenter = bound_info.x - half_radius;
     float rightcenter = bound_info.x + half_radius;
     this->s1 = s1;
     this->s2 = s2;
-
+    // generate face components
     this->eye1 = std::make_unique<Circle>(
                                     s1,
                                     std::vector<glm::vec3> {
@@ -41,19 +43,11 @@ Face::Face(Shader* s1, Shader* s2, std::unique_ptr<Circle> boundary) {
                             {{bound_info.x - half_radius/2.0f, bound_info.y-half_radius}, {1.0f, 1.0f, 1.0f}},
                     });
 
-
-    // this->layers = 1;
-    // this->radius = r;
-    // this->pos.x = xpos; 
-    // this->pos.y = ypos;
-    // this->dir.x = vx; 
-    // this->dir.y = vy; 
 }
     
 // returns true once the face on current layer is balanced 
 bool Face:: bump(){
     bumps++;
-
     if (bumps > 2) {
         // 3456;78910;
         if (left_next){
@@ -70,44 +64,43 @@ bool Face:: bump(){
         }
     }
     else if (bumps == 2) {
-        this->face2 = std::make_unique<Face>(s1,s2,move(eye2));
+        this->face2 = std::make_unique<Face>(s1,s2,move(this->eye2));
         left_next = true;
         return true;
     }
     else{
-        this->face1 = std::make_unique<Face>(s1,s2,move(eye1));
+        this->face1 = std::make_unique<Face>(s1,s2,move(this->eye1));
         left_next = false;
         return false;
     }
-
     return false;
-    // return !left_next;
-    // Face nf = Face(s1,s2,eye1);
-    // eye1 = nf;
 }
 
 
 void Face::render(float timeElapsedSinceLastFrame, bool animate) {
+    // render outermost circle
     this->boundary->render(timeElapsedSinceLastFrame,animate);
+    // if right eye of current face is also a face
+
+    
     if (bumps > 1) {
-        this->face2->boundary->setDir(this->boundary->getDir());
-        this->face2->render(timeElapsedSinceLastFrame,animate);
+        this->face2->boundary->setDir(this->boundary->getDir());    
+        this->face2->render(timeElapsedSinceLastFrame,animate);     // generate (recursively) right eye face
     }
     else{
-        this->eye2->setDir(boundary->getDir());
-        this->eye2->render(timeElapsedSinceLastFrame,animate);
+        this->eye2->setDir(this->boundary->getDir());                     // set velocity of eye equal to the boundary
+        this->eye2->render(timeElapsedSinceLastFrame,animate);      // otherwise just render eye circle
     }
+    // if left eye of current face is also a face
     if (bumps > 0){
-        this->face1->boundary->setDir(this->boundary->getDir());
-        this->face1->render(timeElapsedSinceLastFrame,animate);
+        this->face1->boundary->setDir(this->boundary->getDir());    
+        this->face1->render(timeElapsedSinceLastFrame,animate);     // generate (recursively) lect eye face
     }
     else {
-        this->eye1->setDir(boundary->getDir());
-        this->eye1->render(timeElapsedSinceLastFrame,animate);
+        this->eye1->setDir(this->boundary->getDir());     
+        this->eye1->render(timeElapsedSinceLastFrame,animate);      // otherwise just render eye circle
     }
     
-
-
-    this->mouth->trans(boundary->getDir());
-    this->mouth->render(timeElapsedSinceLastFrame,animate);
+    this->mouth->trans(this->boundary->getDir()); 
+    this->mouth->render(timeElapsedSinceLastFrame,animate);     // render mouth
 }

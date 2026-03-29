@@ -33,8 +33,8 @@ private:
 
     // from CMakeLists.txt, compile definition
     static constexpr char kWindowName[] {WINDOW_NAME};
-    static constexpr int kWindowWidth {1250};
-    static constexpr int kWindowHeight {1250};
+    static constexpr int kWindowWidth {1000};
+    static constexpr int kWindowHeight {1000};
 
 private:
     App();
@@ -66,7 +66,7 @@ private:
     // (while lastMouseLeftClickPos, if there is one, remains the original value).
     glm::dvec2 lastMouseLeftClickPos {0.0, 0.0};
     glm::dvec2 lastMouseLeftPressPos {0.0, 0.0};
-
+    // Mode user selected
     int mode {0};
 };
 

@@ -30,6 +30,7 @@ void App::run()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Detect hits between shapes
         stopMovement(pWindow);
 
         render();
@@ -44,13 +45,12 @@ void App::stopMovement(GLFWwindow * window)
 {
     App & app = *reinterpret_cast<App *>(glfwGetWindowUserPointer(window));
 
-
+    // loop through each pair of shapes on screen
     for (int i = 0; i < app.shapes.size() && app.shapes.size() >= 1; i++){
         for (int j = i+1; j < app.shapes.size(); j++){
-
             glm::vec3 info_i;
             glm::vec3 info_j;
-
+            // get positions and radii
             if (app.mode == 1){
                 Circle* c1 = dynamic_cast<Circle*>(app.shapes[i].get());
                 Circle* c2 = dynamic_cast<Circle*>(app.shapes[j].get());
@@ -63,43 +63,39 @@ void App::stopMovement(GLFWwindow * window)
                 info_i = f1->boundary->getParam();
                 info_j = f2->boundary->getParam();
             }
-            // glm::vec3 info_i = (dynamic_cast<Circle*>(app.shapes[i].get()))->getParam();
-            // glm::vec3 info_j = (dynamic_cast<Circle*>(app.shapes[j].get()))->getParam();
-            
-                glm::vec2 pos1 = glm::vec2(info_i);
-                glm::vec2 pos2 = glm::vec2(info_j);
-                // glm::vec2 pos2 = dynamic_cast<Circle*>(app.shapes[j].get())->curPos;
-                glm::vec2 delta = pos2 - pos1;
-                float distanceSquared = glm::dot(delta, delta); 
-                float radiusSum = info_i.z + info_j.z;
-    
-                if (distanceSquared <= radiusSum * radiusSum){
-                    Circle* circ_i;
-                    Circle* circ_j;
-                    if (app.mode == 1){
-                    // std::cout<<"collision between " << i << " and " << j<<std::endl;
-                        circ_i = dynamic_cast<Circle*>(app.shapes[i].get());
-                        circ_j = dynamic_cast<Circle*>(app.shapes[j].get());
-                    }
-                    if (app.mode == 3){
-                        circ_i = dynamic_cast<Circle*>(dynamic_cast<Face*>(app.shapes[i].get())->boundary.get());
-                        circ_j = dynamic_cast<Circle*>(dynamic_cast<Face*>(app.shapes[j].get())->boundary.get());
-                        
+        
+            glm::vec2 pos1 = glm::vec2(info_i);
+            glm::vec2 pos2 = glm::vec2(info_j);
 
-                    }
-                    glm::vec2 temp1 = circ_i->getDir();
-                    glm::vec2 temp2 = circ_j->getDir();
-                    circ_i->setDir(temp2);
-                    circ_j->setDir(temp1);
-                    if (app.mode == 3){
-                        Face* f1 = dynamic_cast<Face*>(app.shapes[i].get());
-                        Face* f2 = dynamic_cast<Face*>(app.shapes[j].get());
-                        f1->bump();
-                        f2->bump();
-                    }
-                    // dynamic_cast<Circle*>(app.shapes[j].get())->setDir(dynamic_cast<Circle*>(app.shapes[i].get())->getDir());
+            // see if they overlap/touch
+            glm::vec2 delta = pos2 - pos1;
+            float distanceSquared = glm::dot(delta, delta); 
+            float radiusSum = info_i.z + info_j.z;
+
+            // if they do, switch their velocities
+            if (distanceSquared <= radiusSum * radiusSum){
+                Circle* circ_i;
+                Circle* circ_j;
+                if (app.mode == 1){
+                    circ_i = dynamic_cast<Circle*>(app.shapes[i].get());
+                    circ_j = dynamic_cast<Circle*>(app.shapes[j].get());
                 }
-            
+                if (app.mode == 3){
+                    circ_i = dynamic_cast<Circle*>(dynamic_cast<Face*>(app.shapes[i].get())->boundary.get());
+                    circ_j = dynamic_cast<Circle*>(dynamic_cast<Face*>(app.shapes[j].get())->boundary.get());
+                }
+                glm::vec2 temp1 = circ_i->getDir();
+                glm::vec2 temp2 = circ_j->getDir();
+                circ_i->setDir(temp2);
+                circ_j->setDir(temp1);
+                // if they are faces, do face addition
+                if (app.mode == 3){
+                    Face* f1 = dynamic_cast<Face*>(app.shapes[i].get());
+                    Face* f2 = dynamic_cast<Face*>(app.shapes[j].get());
+                    f1->bump();
+                    f2->bump();
+                }
+            }
         }
     }
 }
@@ -161,40 +157,32 @@ void App::mouseButtonCallback(GLFWwindow * window, int button, int action, int m
         {
             app.mousePressed = false;
 
-            std::cout<<"mouseb released."<<std::endl;
-
             switch(app.mode){
-
                 case 1:
                 {
                 // read radius from config file
                 std::ifstream file("etc/config.txt");
                 float r;
                 file >> r;
-                    bool accept = (r>0) && (app.lastMouseLeftClickPos.x + r >= 0) && (app.lastMouseLeftClickPos.x + r <= app.kWindowWidth) && (app.lastMouseLeftClickPos.y + r >= 0) && (app.lastMouseLeftClickPos.y + r <= app.kWindowHeight);
+                bool accept = (r>0) && (app.lastMouseLeftClickPos.x + r >= 0) && (app.lastMouseLeftClickPos.x + r <= app.kWindowWidth) && (app.lastMouseLeftClickPos.y + r >= 0) && (app.lastMouseLeftClickPos.y + r <= app.kWindowHeight);
                 for (int i = 0; i < app.shapes.size(); i++){
                     glm::vec3 info_i = (dynamic_cast<Circle*>(app.shapes[i].get()))->getParam();
                     glm::vec2 pos2 = glm::vec2(info_i);
                     glm::vec2 delta = pos2 - glm::vec2(app.lastMouseLeftClickPos);
                     float distanceSquared = glm::dot(delta, delta); 
                     float radiusSum = info_i.z + r;
-    
-                if (distanceSquared <= radiusSum * radiusSum)
-                    accept = false;
+                    if (distanceSquared <= radiusSum * radiusSum)
+                        accept = false;
                 }
                 if (accept){
                     app.shapes.emplace_back(
                             std::make_unique<Circle>(
                                     app.pCircleShader.get(),
                                     std::vector<glm::vec3> {
-                                            // Coordinate (x, y) of the center and the radius (screen-space)
-                                            {app.lastMouseLeftClickPos.x, app.lastMouseLeftClickPos.y, r}
-                                            // {800.0f, 326.8f, 30.0f},
-                                            // {500.0f, 846.4f, 400.0f}
+                                            {app.lastMouseLeftClickPos.x, app.lastMouseLeftClickPos.y, r}                                            
                                     },app.kWindowWidth,app.kWindowHeight
                             )
                     );
-                    // (dynamic_cast<Circle*>(app.shapes.back().get()))->setDir();
                 }
                 break;
                 }
@@ -217,39 +205,21 @@ void App::mouseButtonCallback(GLFWwindow * window, int button, int action, int m
                             dynamic_cast<Face*>(app.shapes[i].get());
                         }
                     }
-                // // read radius from config file
-                // std::ifstream file("etc/config.txt");
-                // float r;
-                // file >> r;
-                // bool accept = (r>0) && (app.lastMouseLeftClickPos.x + r >= 0) && (app.lastMouseLeftClickPos.x + r <= 1000) && (app.lastMouseLeftClickPos.y + r >= 0) && (app.lastMouseLeftClickPos.y + r <= 1000);
-                // for (int i = 0; i < app.shapes.size(); i++){
-                //     glm::vec3 info_i = (dynamic_cast<Circle*>(app.shapes[i].get()))->getParam();
-                //     glm::vec2 pos2 = glm::vec2(info_i);
-                //     glm::vec2 delta = pos2 - glm::vec2(app.lastMouseLeftClickPos);
-                //     float distanceSquared = glm::dot(delta, delta); 
-                //     float radiusSum = info_i.z + r;
-    
-                // if (distanceSquared <= radiusSum * radiusSum)
-                //     accept = false;
-                // }
-                // if (accept){
-                if (accept){
-                auto c = std::make_unique<Circle>(
-                                    app.pCircleShader.get(),
-                                    std::vector<glm::vec3> {
-                                            {app.lastMouseLeftClickPos.x, app.lastMouseLeftClickPos.y, r}
-                                    },app.kWindowWidth,app.kWindowHeight
-                            );
+                    if (accept){
+                        auto c = std::make_unique<Circle>(
+                                        app.pCircleShader.get(),
+                                        std::vector<glm::vec3> {
+                                                {app.lastMouseLeftClickPos.x, app.lastMouseLeftClickPos.y, r}
+                                        },app.kWindowWidth,app.kWindowHeight
+                                );
 
-                    app.shapes.emplace_back(
-                            std::make_unique<Face>(
-                                    app.pCircleShader.get(),app.pTriangleShader.get(),
-                                std::move(c)        
-                            )
-                    );
-                //     // (dynamic_cast<Circle*>(app.shapes.back().get()))->setDir();
-                // }
-                }
+                        app.shapes.emplace_back(
+                                std::make_unique<Face>(
+                                        app.pCircleShader.get(),app.pTriangleShader.get(),
+                                    std::move(c)        
+                                )
+                        );
+                    }
 
                 break;
                 }
