@@ -15,6 +15,8 @@ public:
     virtual ~Renderable() noexcept = 0;
 
     virtual void render(float timeElapsedSinceLastFrame) = 0;
+    bool visible {true}; 
+
 };
 
 

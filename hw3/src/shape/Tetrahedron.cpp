@@ -18,13 +18,17 @@ Tetrahedron::Tetrahedron(
         glm::vec3 v2;
         glm::vec3 v3;
 
-        while (fin >> v1.x >> v1.y >> v1.z >> v2.x >> v2.y >> v2.z >> v3.x >> v3.y >> v3.z)
-        {
-            glm::vec3 fn = glm::normalize(glm::cross(v2 - v1, v3 - v2));
-            vertices.emplace_back(v1, fn, kColor);
-            vertices.emplace_back(v2, fn, kColor);
-            vertices.emplace_back(v3, fn, kColor);
-        }
+    while (fin >> v1.x >> v1.y >> v1.z >> v2.x >> v2.y >> v2.z >> v3.x >> v3.y >> v3.z)
+    {
+        // Use the position as the normal for smooth interpolation
+        glm::vec3 n1 = glm::normalize(v1);
+        glm::vec3 n2 = glm::normalize(v2);
+        glm::vec3 n3 = glm::normalize(v3);
+
+        vertices.emplace_back(v1, n1, kColor);
+        vertices.emplace_back(v2, n2, kColor);
+        vertices.emplace_back(v3, n3, kColor);
+    }
     }
     else
     {

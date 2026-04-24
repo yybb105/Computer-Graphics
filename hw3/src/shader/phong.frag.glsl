@@ -10,14 +10,28 @@ uniform vec3 viewPos;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 
+uniform int uMode;
+
 void main()
 {
+    vec3 norm;
+
+    if (uMode == 0) {
+        // FLAT SHADING: Calculate the normal using the derivative of the position
+        // This ensures every pixel on a triangle face has the exact same normal.
+        vec3 fdx = dFdx(ourFragPos);
+        vec3 fdy = dFdy(ourFragPos);
+        norm = normalize(cross(fdx, fdy));
+    } else if (uMode == 1){
+        // SMOOTH SHADING: Use the interpolated normal from the vertex shader.
+        norm = normalize(ourNormal);
+    }
+
     // ambient
     float ambientStrength = 0.1f;
     vec3 ambient = ambientStrength * lightColor;
 
     // diffuse
-    vec3 norm = normalize(ourNormal);
     vec3 lightDir = normalize(lightPos - ourFragPos);
     float diff = max(dot(norm, lightDir), 0.0f);
     vec3 diffuse = diff * lightColor;

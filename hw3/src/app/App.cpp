@@ -6,6 +6,11 @@
 #include "shape/Mesh.h"
 #include "shape/Sphere.h"
 #include "shape/Tetrahedron.h"
+#include "shape/Octahedron.h"
+#include "shape/Icosahedron.h"
+#include "shape/Cube.h"
+#include "shape/Cone.h"
+#include "shape/Cylinder.h"
 #include "util/Shader.h"
 
 
@@ -62,7 +67,128 @@ void App::framebufferSizeCallback(GLFWwindow * window, int width, int height)
 
 void App::keyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
+    App & app = *reinterpret_cast<App *>(glfwGetWindowUserPointer(window));
 
+    if (action == GLFW_RELEASE)
+    {
+
+
+        switch(key){
+            case GLFW_KEY_1:{
+            if (app.shapes.size() > 1)
+                app.shapes.erase(app.shapes.begin() + 1, app.shapes.end());
+
+            app.shapes.emplace_back(
+            std::make_unique<Tetrahedron>(
+                    app.pMeshShader.get(),
+                    "var/tetrahedron.txt",
+                    glm::translate(glm::mat4(1.0f), {-2.0f, 0.0f, 0.0f})
+            )
+            );
+
+            // Add the Cube
+            app.shapes.emplace_back(
+            std::make_unique<Cube>(
+                app.pMeshShader.get(),
+                "var/cube.txt",
+                glm::translate(glm::mat4(1.0f), {0.0f, 0.0f, 0.0f}) // Center it
+            )
+            );
+
+            app.shapes.emplace_back(
+            std::make_unique<Octahedron>(
+                app.pMeshShader.get(),
+                "var/octahedron.txt",
+                glm::translate(glm::mat4(1.0f), {2.0f, 0.0f, 0.0f}) // Move it to the right
+            )
+            );
+            app.mode = 1;
+            break;
+        }
+        case GLFW_KEY_F1:
+            // app.displayMode = app.RenderMode::WIREFRAME;
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            break;
+        case GLFW_KEY_F2:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            app.displayMode = 0;
+            break;
+        case GLFW_KEY_F4:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            app.displayMode = 1;
+            break;
+        case GLFW_KEY_X:
+            { 
+                app.axes = !app.axes;
+                
+            break;
+        }
+        case GLFW_KEY_2:
+        {
+            app.mode = 2;
+            if (app.shapes.size() > 1)
+                app.shapes.erase(app.shapes.begin() + 1, app.shapes.end());
+
+            app.shapes.emplace_back(
+                std::make_unique<Icosahedron>(
+                    app.pMeshShader.get(),         
+                    "var/icosahedron.txt",      
+                    glm::translate(glm::mat4(1.0f), {0.0f, 0.0f, 0.0f}) // Position it to the right
+                )
+            );
+            break;
+        }
+
+        case GLFW_KEY_3:
+           { app.mode = 3;
+            if (app.shapes.size() > 1)
+                app.shapes.erase(app.shapes.begin() + 1, app.shapes.end());
+                
+            glm::mat4 ellipsoidScale = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 1.0f, 0.5f));
+            
+            // 3. Add a fresh Icosahedron
+            // This starts as a 20-triangle approximation
+            app.shapes.emplace_back(
+                std::make_unique<Icosahedron>(
+                    app.pMeshShader.get(), 
+                    "var/icosahedron.txt", 
+                    ellipsoidScale
+                )
+            );
+        
+            break;
+
+        }
+        case GLFW_KEY_4:
+            {
+            app.mode = 4;    
+            if (app.shapes.size() > 1)
+                app.shapes.erase(app.shapes.begin() + 1, app.shapes.end());
+            glm::vec3 kColor = glm::vec3(1.0f, 0.5f, 0.31f);
+            
+            app.shapes.emplace_back(std::make_unique<Sphere>(
+            app.pSphereShader.get(), glm::vec3(-3.0f, 0.0f, 0.0f), 1.0f, kColor, glm::mat4(1.0f)));
+
+
+            // // Cylinder in middle
+            // app.shapes.emplace_back(std::make_unique<Cylinder>(
+            //     app.pCylinderShader.get(), glm::vec3(0.0f, 0.0f, 0.0f), 1.0f, 2.0f, kColor, glm::mat4(1.0f)));
+
+            // // Cone on right
+            // app.shapes.emplace_back(std::make_unique<Cone>(
+            //     app.pConeShader.get(), glm::vec3(3.0f, 0.0f, 0.0f), 1.0f, 2.0f, kColor, glm::mat4(1.0f)));
+            break;
+            }
+
+
+
+        }
+
+        if (key == GLFW_KEY_EQUAL && mods == GLFW_MOD_SHIFT& (app.mode == 2 ||app.mode == 3 )){
+            auto* ico = dynamic_cast<Icosahedron*>(app.shapes.back().get());        
+            ico->subdivide();
+        }
+        }
 }
 
 
@@ -174,6 +300,23 @@ void App::initializeShadersAndObjects()
                                              "src/shader/sphere.tese.glsl",
                                              "src/shader/phong.frag.glsl");
 
+    // For Cylinder
+    pCylinderShader = std::make_unique<Shader>(
+        "src/shader/sphere.vert.glsl", // Reuse sphere vertex shader (it just passes the point)
+        "src/shader/sphere.tesc.glsl", // Reuse sphere control shader
+        "src/shader/cylinder.tese.glsl", // USE YOUR NEW CYLINDER TESE
+        "src/shader/phong.frag.glsl"   // Use your standard lighting fragment shader
+    );
+
+    // For Cone
+    pConeShader = std::make_unique<Shader>(
+        "src/shader/sphere.vert.glsl",
+        "src/shader/sphere.tesc.glsl",
+        "src/shader/cone.tese.glsl",     // USE YOUR NEW CONE TESE
+        "src/shader/phong.frag.glsl"
+    );
+
+
     shapes.emplace_back(
             std::make_unique<Line>(
                     pLineShader.get(),
@@ -189,38 +332,59 @@ void App::initializeShadersAndObjects()
             )
     );
 
-    shapes.emplace_back(
-            std::make_unique<Tetrahedron>(
-                    pMeshShader.get(),
-                    "var/tetrahedron.txt",
-                    glm::translate(glm::mat4(1.0f), {-2.0f, 0.0f, 0.0f})
-            )
-    );
+          shapes.emplace_back(std::make_unique<Cylinder>(
+                pCylinderShader.get(), glm::vec3(0.0f, 0.0f, 0.0f), 3.0f, 5.0f, glm::vec3(1,0,0), glm::mat4(1.0f)));
 
-    shapes.emplace_back(
-            std::make_unique<Mesh>(
-                    pMeshShader.get(),
-                    std::vector<Mesh::Vertex> {
-                            {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
-                            {{0.5f,  -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}},
-                            {{0.0f,  0.5f,  0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
-                    },
-                    glm::rotate(
-                            glm::translate(glm::mat4(1.0f), {2.0f, 0.0f, 0.0f}),
-                            glm::radians(45.0f), {0.0f, 1.0f, 0.0f}
-                    )
-            )
-    );
 
-    shapes.emplace_back(
-            std::make_unique<Sphere>(
-                    pSphereShader.get(),
-                    glm::vec3(0.0f, 0.0f, 0.0f),
-                    1.0f,
-                    glm::vec3(1.0f, 0.5f, 0.31f),
-                    glm::mat4(1.0f)
-            )
-    );
+    // shapes.emplace_back(
+    //         std::make_unique<Tetrahedron>(
+    //                 pMeshShader.get(),
+    //                 "var/tetrahedron.txt",
+    //                 glm::translate(glm::mat4(1.0f), {-2.0f, 0.0f, 0.0f})
+    //         )
+    // );
+
+    // // Add the Cube
+    // shapes.emplace_back(
+    //     std::make_unique<Cube>(
+    //         pMeshShader.get(),
+    //         "var/cube.txt",
+    //         glm::translate(glm::mat4(1.0f), {0.0f, 0.0f, 0.0f}) // Center it
+    //     )
+    // );
+
+    // shapes.emplace_back(
+    //     std::make_unique<Octahedron>(
+    //         pMeshShader.get(),
+    //         "var/octahedron.txt",
+    //         glm::translate(glm::mat4(1.0f), {2.0f, 0.0f, 0.0f}) // Move it to the right
+    //     )
+    // );
+
+    // shapes.emplace_back(
+    //         std::make_unique<Mesh>(
+    //                 pMeshShader.get(),
+    //                 std::vector<Mesh::Vertex> {
+    //                         {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+    //                         {{0.5f,  -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}},
+    //                         {{0.0f,  0.5f,  0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
+    //                 },
+    //                 glm::rotate(
+    //                         glm::translate(glm::mat4(1.0f), {2.0f, 0.0f, 0.0f}),
+    //                         glm::radians(45.0f), {0.0f, 1.0f, 0.0f}
+    //                 )
+    //         )
+    // );
+
+    // shapes.emplace_back(
+    //         std::make_unique<Sphere>(
+    //                 pSphereShader.get(),
+    //                 glm::vec3(0.0f, 0.0f, 0.0f),
+    //                 1.0f,
+    //                 glm::vec3(1.0f, 0.5f, 0.31f),
+    //                 glm::mat4(1.0f)
+    //         )
+    // );
 }
 
 
@@ -253,9 +417,22 @@ void App::render()
     pSphereShader->setVec3("lightPos", lightPos);
     pSphereShader->setVec3("lightColor", lightColor);
 
+    pMeshShader->use();
+    pMeshShader->setInt("uMode", displayMode);
+
+    pSphereShader->use();
+    pSphereShader->setInt("uMode", displayMode);
     // Render.
-    for (auto & s : shapes)
-    {
-        s->render(t);
+    // for (auto & s : shapes)
+    // {
+    //     if (s->visible)
+    //         s->render(t);
+    // }
+    glDisable(GL_CULL_FACE);
+    for (size_t i = 0; i < shapes.size(); ++i) {
+        if (i == 0 && !axes) {
+            continue;
+        }
+        shapes[i]->render(timeElapsedSinceLastFrame);
     }
 }

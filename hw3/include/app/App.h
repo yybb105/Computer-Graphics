@@ -46,6 +46,8 @@ private:
     std::unique_ptr<Shader> pLineShader;
     std::unique_ptr<Shader> pMeshShader;
     std::unique_ptr<Shader> pSphereShader;
+    std::unique_ptr<Shader> pCylinderShader;
+    std::unique_ptr<Shader> pConeShader;
 
     // Objects to render.
     std::vector<std::unique_ptr<Renderable>> shapes;
@@ -72,6 +74,12 @@ private:
     // (while lastMouseLeftClickPos, if there is one, remains the original value).
     glm::dvec2 lastMouseLeftClickPos {0.0, 0.0};
     glm::dvec2 lastMouseLeftPressPos {0.0, 0.0};
+
+    int mode {0};
+
+    int displayMode {0}; 
+
+    bool axes {false};
 };
 
 
