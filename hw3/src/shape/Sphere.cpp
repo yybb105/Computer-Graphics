@@ -43,7 +43,7 @@ void Sphere::render(float timeElapsedSinceLastFrame)
     pShader->setVec3("center", center);
     pShader->setFloat("radius", radius);
     pShader->setVec3("color", color);
-
+    pShader->setInt("uTessLevel", 64); 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 

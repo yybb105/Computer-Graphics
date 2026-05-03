@@ -11,7 +11,7 @@ Tetrahedron::Tetrahedron(
 )
         : Mesh(pShader, model)
 {
-    // Initialize vertex data
+    // vertex data
     if (std::ifstream fin {vertexFile})
     {
         glm::vec3 v1;
@@ -20,7 +20,7 @@ Tetrahedron::Tetrahedron(
 
     while (fin >> v1.x >> v1.y >> v1.z >> v2.x >> v2.y >> v2.z >> v3.x >> v3.y >> v3.z)
     {
-        // Use the position as the normal for smooth interpolation
+        // position as the normal for smooth interpolation
         glm::vec3 n1 = glm::normalize(v1);
         glm::vec3 n2 = glm::normalize(v2);
         glm::vec3 n3 = glm::normalize(v3);
@@ -35,7 +35,6 @@ Tetrahedron::Tetrahedron(
         throw std::runtime_error("failed to open " + vertexFile);
     }
 
-    // OpenGL pipeline configuration
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glBufferData(GL_ARRAY_BUFFER,
@@ -56,8 +55,8 @@ void Tetrahedron::render(float timeElapsedSinceLastFrame)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glDrawArrays(GL_TRIANGLES,
-                 0,                                       // start from index 0 in current VBO
-                 static_cast<GLsizei>(vertices.size()));  // draw these number of elements
+                 0,                                       
+                 static_cast<GLsizei>(vertices.size()));  
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

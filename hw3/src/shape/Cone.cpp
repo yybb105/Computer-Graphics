@@ -16,10 +16,10 @@ void Cone::render(float timeElapsedSinceLastFrame) {
     pShader->setMat4("model", model);
     pShader->setVec3("center", center);
     pShader->setFloat("radius", radius);
-    pShader->setFloat("height", height); // New uniform!
+    pShader->setFloat("height", height); 
     pShader->setVec3("color", color);
-
+    pShader->setInt("uTessLevel", 64); 
     glBindVertexArray(vao);
     glPatchParameteri(GL_PATCH_VERTICES, 1);
-    glDrawArrays(GL_PATCHES, 0, 2); // 3 Patches to make it "Closed"
+    glDrawArrays(GL_PATCHES, 0, 2); 
 }

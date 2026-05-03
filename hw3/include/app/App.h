@@ -48,6 +48,9 @@ private:
     std::unique_ptr<Shader> pSphereShader;
     std::unique_ptr<Shader> pCylinderShader;
     std::unique_ptr<Shader> pConeShader;
+    std::unique_ptr<Shader> pTorusShader;
+    std::unique_ptr<Shader> pDodecahedronShader;
+    std::unique_ptr<Shader> pSuperQuadricShader;
 
     // Objects to render.
     std::vector<std::unique_ptr<Renderable>> shapes;
@@ -80,6 +83,18 @@ private:
     int displayMode {0}; 
 
     bool axes {false};
+
+    bool isFlying {false};
+
+    char flightMode {'N'};
+
+    float flightAngle {0};
+
+// Saved Camera State for a smooth take-off
+    glm::vec3 flightStartPos {0.0f, 0.0f, 0.0f};
+    glm::vec3 flightStartFront {0.0f, 0.0f, -1.0f};
+    glm::vec3 flightStartRight {1.0f, 0.0f, 0.0f};
+    glm::vec3 flightStartUp {0.0f, 1.0f, 0.0f};
 };
 
 

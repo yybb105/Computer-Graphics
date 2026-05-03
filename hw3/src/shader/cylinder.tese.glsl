@@ -23,17 +23,17 @@ void main() {
     vec3 pos;
     vec3 n;
 
-    if (gl_PrimitiveID == 0) { // THE TUBE
+    if (gl_PrimitiveID == 0) { // tube
         pos = vec3(radius * cos(phi), (v - 0.5) * height, radius * sin(phi));
-        n = vec3(cos(phi), 0.0, sin(phi)); // Normal points out from center axis
+        n = vec3(cos(phi), 0.0, sin(phi)); // normal points out from center
     } 
-    else if (gl_PrimitiveID == 1) { // TOP CAP
+    else if (gl_PrimitiveID == 1) { // top cap
         pos = vec3(v * radius * cos(phi), 0.5 * height, v * radius * sin(phi));
-        n = vec3(0.0, 1.0, 0.0); // Points straight up
+        n = vec3(0.0, 1.0, 0.0); // points straight up
     } 
     else { // BOTTOM CAP
         pos = vec3(v * radius * cos(phi), -0.5 * height, v * radius * sin(phi));
-        n = vec3(0.0, -1.0, 0.0); // Points straight down
+        n = vec3(0.0, -1.0, 0.0); // points straight down
     }
 
     pos += center;

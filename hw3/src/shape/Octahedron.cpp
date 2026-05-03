@@ -8,14 +8,13 @@
 Octahedron::Octahedron(Shader* pShader, const std::string& vertexFile, const glm::mat4& model)
     : Mesh(pShader, model)
 {
-    const glm::vec3 octColor{0.2f, 0.6f, 0.8f}; // Different color for distinction
+    const glm::vec3 octColor{0.2f, 0.6f, 0.8f};
 
     if (std::ifstream fin{vertexFile}) {
         glm::vec3 v1, v2, v3;
         while (fin >> v1.x >> v1.y >> v1.z >> v2.x >> v2.y >> v2.z >> v3.x >> v3.y >> v3.z)
         {
-            // Instead of a shared face normal (fn)...
-            // Use the normalized position of each vertex as its own normal!
+            // use the normalized position of each vertex as its own normal
             glm::vec3 n1 = glm::normalize(v1); 
             glm::vec3 n2 = glm::normalize(v2);
             glm::vec3 n3 = glm::normalize(v3);

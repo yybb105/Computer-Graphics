@@ -1,10 +1,10 @@
 # HW3
 
-Your Name (Please replace with your name.)
+Yibin Ye
 
-Your SBU ID (Please replace with your 9-digit SBU ID.)
+115638220
 
-Your Email (Please replace with your email.)
+yibin.ye@stonybrook.edu
 
 ## Overview
 
@@ -84,63 +84,63 @@ Only features or parts checked here would be graded!
   - [x] Camera Functionalities
     - [x] Show/hide x, y, z Axes
     - [x] `W`/`S`/`A`/`D`/`UP`/`DOWN` Functionalities
-- [ ] **P1: Simple Polyhedral Objects**
-  - [ ] Tetrahedron
-    - [ ] Wireframe
-    - [ ] Flat
-    - [ ] Smooth
-  - [ ] Cube
-    - [ ] Wireframe
-    - [ ] Flat
-    - [ ] Smooth
-  - [ ] Octahedron
-    - [ ] Wireframe
-    - [ ] Flat
-    - [ ] Smooth
-- [ ] **P2: Icosahedron**
-  - [ ] Wireframe
-  - [ ] Flat
-  - [ ] Smooth
-  - [ ] Subdivision
-- [ ] **P3: Ellipsoid**
-  - [ ] Wireframe
-  - [ ] Flat
-  - [ ] Smooth
-  - [ ] Subdivision
-- [ ] **P4: Tessellation**
-  - [ ] Sphere
-    - [ ] Wireframe
-    - [ ] Flat/Smooth
-  - [ ] Cylinder
-    - [ ] Wireframe
-    - [ ] Flat/Smooth
-  - [ ] Cone
-    - [ ] Wireframe
-    - [ ] Flat/Smooth
-- [ ] **P5: Torus**
-  - [ ] Wireframe
-  - [ ] Flat
-  - [ ] Smooth
-  - [ ] Subdivision
-- [ ] **P6: Super-quqdrics And Dodecahedron**
-  - [ ] Super-quqdrics
-    - [ ] Wireframe
-    - [ ] Flat/Smooth
-    - [ ] Dynamically Load Parameters
-  - [ ] Dodecahedron
-    - [ ] Wireframe
-    - [ ] Flat
-    - [ ] Smooth
-    - [ ] Subdivision
-- [ ] **P7: Flight Simulation**
-  - [ ] City Scene Assembly (Has 8-12 urban structures)
-  - [ ] Display
-    - [ ] Wireframe
-    - [ ] Flat
-    - [ ] Smooth
-  - [ ] Loops
-    - [ ] Horizontal Loop
-    - [ ] Vertical Loop
+- [x] **P1: Simple Polyhedral Objects**
+  - [x] Tetrahedron
+    - [x] Wireframe
+    - [x] Flat
+    - [x] Smooth
+  - [x] Cube
+    - [x] Wireframe
+    - [x] Flat
+    - [x] Smooth
+  - [x] Octahedron
+    - [x] Wireframe
+    - [x] Flat
+    - [x] Smooth
+- [x] **P2: Icosahedron**
+  - [x] Wireframe
+  - [x] Flat
+  - [x] Smooth
+  - [x] Subdivision
+- [x] **P3: Ellipsoid**
+  - [x] Wireframe
+  - [x] Flat
+  - [x] Smooth
+  - [x] Subdivision
+- [x] **P4: Tessellation**
+  - [x] Sphere
+    - [x] Wireframe
+    - [x] Flat/Smooth
+  - [x] Cylinder
+    - [x] Wireframe
+    - [x] Flat/Smooth
+  - [x] Cone
+    - [x] Wireframe
+    - [x] Flat/Smooth
+- [x] **P5: Torus**
+  - [x] Wireframe
+  - [x] Flat
+  - [x] Smooth
+  - [x] Subdivision
+- [x] **P6: Super-quqdrics And Dodecahedron**
+  - [x] Super-quqdrics
+    - [x] Wireframe
+    - [x] Flat/Smooth
+    - [x] Dynamically Load Parameters
+  - [x] Dodecahedron
+    - [x] Wireframe
+    - [x] Flat
+    - [x] Smooth
+    - [x] Subdivision
+- [x] **P7: Flight Simulation**
+  - [x] City Scene Assembly (Has 8-12 urban structures)
+  - [x] Display
+    - [x] Wireframe
+    - [x] Flat
+    - [x] Smooth
+  - [x] Loops
+    - [x] Horizontal Loop
+    - [x] Vertical Loop
 - [ ] **P8: Bonus**
   - [ ] Normal Display Mode
   - [ ] Other (Please Specify)

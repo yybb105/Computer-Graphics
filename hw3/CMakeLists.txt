@@ -38,6 +38,9 @@ set(SHAPE
         include/shape/Icosahedron.h
         include/shape/Cone.h
         include/shape/Cylinder.h
+        include/shape/Torus.h
+        include/shape/Dodecahedron.h
+        include/shape/SuperQuadric.h
         src/shape/GLShape.cpp
         src/shape/Line.cpp
         src/shape/Mesh.cpp
@@ -49,6 +52,9 @@ set(SHAPE
         src/shape/Icosahedron.cpp
         src/shape/Cone.cpp
         src/shape/Cylinder.cpp
+        src/shape/Torus.cpp
+        src/shape/Dodecahedron.cpp
+        src/shape/SuperQuadric.cpp
 )
 
 set(ALL_INCLUDE_DIRS

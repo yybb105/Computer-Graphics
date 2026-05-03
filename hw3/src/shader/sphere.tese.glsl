@@ -19,7 +19,6 @@ const float kPi = 3.14159265358979323846f;
 
 void main()
 {
-    // need to use gl_in[0] in some way, otherwise tese shader won't be called!
     vec4 WC = gl_in[0].gl_Position;
 
     float u = gl_TessCoord.x;

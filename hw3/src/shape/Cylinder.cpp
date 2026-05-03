@@ -20,7 +20,7 @@ void Cylinder::render(float timeElapsedSinceLastFrame) {
     pShader->setFloat("radius", radius);
     pShader->setFloat("height", height); // New uniform!
     pShader->setVec3("color", color);
-
+    pShader->setInt("uTessLevel", 64); // Hardcode it back to 64 so they look perfectly smooth!
     glBindVertexArray(vao);
     glPatchParameteri(GL_PATCH_VERTICES, 1);
     glDrawArrays(GL_PATCHES, 0, 3); // 3 Patches to make it "Closed"
